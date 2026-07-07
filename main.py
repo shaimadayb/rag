@@ -1,3 +1,4 @@
+import csv
 from vector_db import VectorDB
 from groq import Groq
 import os
@@ -5,16 +6,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-chunks = [
-    "Le chat bleu de Bob s'appelle Henri.",
-    "La voiture rouge de Sarah roule à l'energie solaire.",
-    "Le chien violet de Marc aboie en morse.",
-    "La maison de Julie flotte au-dessus du sol.",
-    "Le velo de Lea parle chinois."
-]
+chunks = []
+with open("05_corpus_rag.csv", "r", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        chunks.append(row["text"])
 
 db = VectorDB(chunks=chunks)
-print("BASE CREEE")
 chunks_result, _ = db.retrieve("Quelle est la couleur du chat de Bob ?")
 print("CHUNKS:", chunks_result)
 
