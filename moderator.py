@@ -14,12 +14,12 @@ class Moderator:
 
     def moderate(self, question):
         response = self.client.chat.completions.create(
-            model="llama-guard-3-8b",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "user", "content": self.system_prompt + "\n\nMessage: " + question}
             ]
         )
         text = response.choices[0].message.content.strip()
-        if "true" in text.lower():
+        if "unsafe" in text.lower() or "injection" in text.lower():
             return {"is_prompt_injection": True}
         return {"is_prompt_injection": False}
