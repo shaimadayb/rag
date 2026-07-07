@@ -1,4 +1,4 @@
-from vector_db import VectorDB
+from rag import RAG
 
 chunks = [
     "Le chat bleu de Bob s'appelle Henri.",
@@ -8,7 +8,5 @@ chunks = [
     "Le velo de Lea parle chinois."
 ]
 
-db = VectorDB(chunks=chunks)
-print("BASE CREEE")
-docs, metas = db.retrieve("Quelle est la couleur du chat de Bob ?")
-print("RESULTAT:", docs)
+rag = RAG(chunks=chunks)
+print(rag.answer_question("Quelle est la couleur du chat de Bob ?"))
