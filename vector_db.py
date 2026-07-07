@@ -1,4 +1,4 @@
-import chromadb
+﻿import chromadb
 from sentence_transformers import SentenceTransformer
 from config import EMBEDDING_MODEL, CHROMA_PATH, COLLECTION_NAME
 
@@ -39,7 +39,7 @@ class VectorDB:
         question_embedding = self.encode([question])
         results = self.collection.query(
             query_embeddings=question_embedding,
-            n_results=n
+            n_results=n,
+            include=["documents", "metadatas"]
         )
-        print("DEBUG results:", results)
         return results["documents"][0], results["metadatas"][0]

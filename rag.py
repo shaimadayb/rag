@@ -11,14 +11,12 @@ class RAG:
     def __init__(self, chunks=None):
         self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
         self.db = VectorDB(chunks=chunks)
-
         with open("prompts/system_rag.txt", "r", encoding="utf-8") as f:
             self.system_template = f.read()
 
     def answer_question(self, question):
         chunks, _ = self.db.retrieve(question, n=3)
         system_prompt = self.system_template.replace("{{Chunks}}", "\n".join(chunks))
-
         response = self.client.chat.completions.create(
             model=LLM_MODEL,
             messages=[
@@ -26,5 +24,4 @@ class RAG:
                 {"role": "user", "content": question}
             ]
         )
-
         return response.choices[0].message.content
